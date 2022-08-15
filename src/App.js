@@ -6,6 +6,8 @@ function App() {
     latitude: "",
     longitude: "",
   });
+  // states for today with image, temperature and humidity
+  // states for tomorrow with image, temperature and humidity
 
   const handleLat = (e) => {
     setLocation({...location,
@@ -17,6 +19,25 @@ function App() {
     setLocation({...location,
     longitude: e.target.value,
   })
+  }
+
+  const getWeather = (lat, long) => {
+    fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${long}?key=${process.env.REACT_APP_WEATHER_KEY}`)
+      .then((response) => {
+        if (response.ok) {
+          return response;
+        }
+        throw new Error('Bad Request');
+      })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log('d', data);
+        // currentConditions.temp, currentConditions.humidity
+        // set todays state
+        // set tomorrows state
+      })
   }
 
   const handleSubmit = (e) => {
@@ -39,6 +60,10 @@ function App() {
           <input id="longitude" name="longitude" onChange={handleLong} value={location.longitude}></input>
           <button onClick={handleSubmit}>Get Weather Details</button>
         </form>
+
+{/*         <div>{todays weather state}</div>
+        <div>{tomorros weather state}</div> */}
+
       </div>
 
     </div>
