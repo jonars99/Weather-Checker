@@ -8,6 +8,7 @@ function App() {
   });
   // states for today with image, temperature and humidity
   // states for tomorrow with image, temperature and humidity
+  const [ weather, setWeather ] = useState([]);
 
   const handleLat = (e) => {
     setLocation({...location,
@@ -33,7 +34,8 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        console.log('d', data);
+        console.log(data.currentConditions);
+        setWeather([data.currentConditions.icon, data.currentConditions.temp, data.currentConditions.humidity]);
         // currentConditions.temp, currentConditions.humidity
         // set todays state
         // set tomorrows state
@@ -43,7 +45,6 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const [lat, long] = [parseFloat(location.latitude, 6), parseFloat(location.longitude)];
-    console.log(lat, long);
     getWeather(lat, long);
   }
 
@@ -52,7 +53,7 @@ function App() {
       <h2>Weather Checker</h2>
       <p>Please enter your latitude and longitude to check the weather</p>
 
-      <div className="input-wrapper">
+      <div className="wrapper">
         <form onSubmit={handleSubmit}>
           <label htmlFor="latitude">Latitude</label>
           <input id="latitude" name="latitude" onChange={handleLat} value={location.latitude}></input>
@@ -61,8 +62,12 @@ function App() {
           <button onClick={handleSubmit}>Get Weather Details</button>
         </form>
 
-{/*         <div>{todays weather state}</div>
-        <div>{tomorros weather state}</div> */}
+        <div className="wrapper">
+          <h2>Todays Weather</h2>
+          <p>{weather[0]}</p>
+          <p>Temperature {weather[1]}</p>
+          <p>Humidity {weather[2]}</p>
+        </div>
 
       </div>
 
